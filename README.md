@@ -1,0 +1,4 @@
+ncq
+===
+
+NoCombatQuit
