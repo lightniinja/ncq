@@ -1,0 +1,15 @@
+prefix: '&4NQC:'
+message-ontag: '&eYou have been put in combat! Do not log out!'
+message-onlog: '&c{%p} logged out while in combat!'
+message-onsafe: '&eYou can now safely log out!'
+message-incombat: '&cYou are currently in combat!'
+message-notincombat: '&aYou are currently not in combat!'
+message-nocommand: '&cYou cannot use that command while in combat!'
+command: '%killplayer%' 
+blocked-cmds:
+  - spawn
+  - tpyes
+  - tpaccept
+### %killplayer% will kill the player, and %player% will be replaced with the players name.
+time: 70 
+#7 seconds.

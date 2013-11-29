@@ -1,0 +1,13 @@
+name: NoCombatQuit
+version: 1.1
+main: com.lightniinja.ncq.NoCombatQuit
+commands:
+  check:
+    description: Checks remaining time in combat.
+    usage: /check
+    permission: ncq.check
+    permission-message: You do not have permissions to do that!
+permissions:
+  ncq.check:
+    default: true
+    description: Check combat time
