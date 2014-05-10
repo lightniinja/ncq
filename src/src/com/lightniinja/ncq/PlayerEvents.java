@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -49,7 +50,7 @@ public class PlayerEvents implements Listener {
 		Player p = e.getPlayer();
 		if(NoCombatQuit.tagged.containsKey(p.getName())) {
 			if(NoCombatQuit.command.equalsIgnoreCase("%killplayer%")) {
-				p.setHealth(0);
+				p.setHealth(0.00);
 			} else {
 				Bukkit.dispatchCommand(Bukkit.getConsoleSender(), NoCombatQuit.command.replace("%player%", p.getName()));
 			}
@@ -65,11 +66,21 @@ public class PlayerEvents implements Listener {
 	@EventHandler
 	public void onPlayerCommand(PlayerCommandPreprocessEvent e) {
 		if(NoCombatQuit.tagged.containsKey(e.getPlayer().getName())) {
-			if(NoCombatQuit.instance.getConfig().getStringList("blocked-cmds").contains(e.getMessage().split(" ")[0])) {
-				e.setCancelled(true);
-				e.getPlayer().sendMessage(NoCombatQuit.prefix + " " + NoCombatQuit.format(NoCombatQuit.message_nocommand));
+			String cmd_name = e.getMessage().split(" ")[0].toLowerCase();
+			String cmd_lower = e.getMessage().toLowerCase();
+			for (String cmd : NoCombatQuit.instance.getConfig().getStringList("blocked-cmds")) {
+				String cmd_blocked = cmd.toLowerCase();
+				if (cmd_name.equals(cmd_blocked) || cmd_lower.startsWith(cmd_blocked)) {
+					e.setCancelled(true);
+					e.getPlayer().sendMessage(NoCombatQuit.prefix + " " + NoCombatQuit.format(NoCombatQuit.message_nocommand));
+				}
 			}
 		}
+	}
+	
+	@EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+	public void onPlayerDeath(PlayerDeathEvent e) {
+		NoCombatQuit.tagged.remove(e.getEntity().getName());
 	}
 	
 }
