@@ -54,7 +54,7 @@ public class NoCombatQuit extends JavaPlugin {
 	}
 	
 	public boolean onCommand(CommandSender s, Command c, String label, String[] args) {
-		if(c.getName().equalsIgnoreCase("check")) {
+		if(c.getName().equalsIgnoreCase("ncq")) {
 			if(s instanceof Player) {
 				Player p = (Player)s;
 				if(tagged.containsKey(p.getName())) {
