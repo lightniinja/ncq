@@ -15,7 +15,7 @@ public class PlayerEvents implements Listener {
 	@EventHandler(ignoreCancelled = false, priority = EventPriority.LOWEST)
 	public void onPlayerDamage(EntityDamageByEntityEvent e) {
 		if(e.getEntity() instanceof Player && e.getDamager() instanceof Player) {
-
+			// rebuild
 			Player p = (Player)e.getEntity();
 			Player d = (Player)e.getDamager();
 			if(!NoCombatQuit.tagged.containsKey(p.getName())) {
@@ -34,13 +34,24 @@ public class PlayerEvents implements Listener {
 				NoCombatQuit.tagged.put(d.getName(), System.currentTimeMillis());
 			}
 		} else {
-			Player p = (Player)e.getEntity();
-			if(!NoCombatQuit.tagged.containsKey(p.getName())) {
-				NoCombatQuit.tagged.put(p.getName(), System.currentTimeMillis());
-				p.sendMessage(NoCombatQuit.format(NoCombatQuit.prefix) + " " + NoCombatQuit.format(NoCombatQuit.message_ontag));
-			} else {
-				NoCombatQuit.tagged.remove(p.getName());
-				NoCombatQuit.tagged.put(p.getName(), System.currentTimeMillis());
+			if(e.getEntity() instanceof Player) {
+				Player p = (Player)e.getEntity();
+				if(!NoCombatQuit.tagged.containsKey(p.getName())) {
+					NoCombatQuit.tagged.put(p.getName(), System.currentTimeMillis());
+					p.sendMessage(NoCombatQuit.format(NoCombatQuit.prefix) + " " + NoCombatQuit.format(NoCombatQuit.message_ontag));
+				} else {
+					NoCombatQuit.tagged.remove(p.getName());
+					NoCombatQuit.tagged.put(p.getName(), System.currentTimeMillis());
+				}
+			} else if(e.getDamager() instanceof Player) {
+				Player p = (Player)e.getDamager();
+				if(!NoCombatQuit.tagged.containsKey(p.getName())) {
+					NoCombatQuit.tagged.put(p.getName(), System.currentTimeMillis());
+					p.sendMessage(NoCombatQuit.format(NoCombatQuit.prefix) + " " + NoCombatQuit.format(NoCombatQuit.message_ontag));
+				} else {
+					NoCombatQuit.tagged.remove(p.getName());
+					NoCombatQuit.tagged.put(p.getName(), System.currentTimeMillis());
+				}
 			}
 		}
 	}
